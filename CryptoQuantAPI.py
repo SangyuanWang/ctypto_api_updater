@@ -16,7 +16,7 @@ from datetime import datetime
 API_KEY = "qYh3Ex0xTVt4I1nmQmDap2iQCZxunclIT7TL1mcCnlTExjV8Q2UpTKVkoqmpLERTLOLgaMFhOhcgb9530JCh9oPG"
 ASSET = "btc"                 # 资产，例如 btc, eth
 METRIC = "network-data/difficulty"  # 指标路径，参考文档
-DB_URL = "postgresql+psycopg2://postgres:Vk3rUTQjcweSkOGO@abel-sit.cwbe6kuqcn4q.us-east-1.rds.amazonaws.com:5432/abel-test"  # 你等下提供
+DB_URL = "postgresql://postgres:Vk3rUTQjcweSkOGO@abel-sit.cwbe6kuqcn4q.us-east-1.rds.amazonaws.com:5432/abel-test"  # 你等下提供
 
 # === 2. 拉数据函数 ===
 def fetch_cryptoquant_data(asset, metric, start, end, window="day", limit=366):
