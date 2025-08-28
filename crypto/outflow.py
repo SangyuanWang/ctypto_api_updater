@@ -16,12 +16,12 @@ from db_info import write_to_db
 ASSET = "stablecoin"                 # 资产，例如 btc, eth
 METRIC = "exchange-flows/outflow"  # 指标路径，参考文档
 
-def token_in(window):
+def token_in(window, exchange):
     for token in ASSET_TOKEN[ASSET]:
         params = {
             "window": window,
             "token": token,
-            "exchange": "all_exchange",
+            "exchange": exchange,
             "limit": 1000,
         }
         df = fetch_cryptoquant_data(
@@ -29,7 +29,10 @@ def token_in(window):
             metric=METRIC,
             params=params,
         )
+        if df is None:
+            continue
         df["token"] = token
+        df["exchange"] = exchange
         print(df.head())  # 看一下数据格式
 
         # 存数据库
@@ -37,11 +40,11 @@ def token_in(window):
         print(f"✅ {token}数据写入完成！")
 
 
-def asset_in(window):
+def asset_in(window, exchange):
     for asset in ASSETS:
         params = {
             "window": window,
-            "exchange": "all_exchange",
+            "exchange": exchange,
             "limit": 1000,
         }
         df = fetch_cryptoquant_data(
@@ -53,6 +56,7 @@ def asset_in(window):
             continue
         else:
             df["token"] = asset
+            df["exchange"] = exchange
             print(df.head())  # 看一下数据格式
 
             # 存数据库
@@ -66,6 +70,7 @@ if __name__ == "__main__":
     start_date = "2025-01-01"
     end_date = datetime.today().strftime("%Y-%m-%d")
     window = "day"
-    token_in(window)
-    asset_in(window)
+    exchange = "all_exchange"
+    token_in(window, exchange)
+    asset_in(window, exchange)
 
