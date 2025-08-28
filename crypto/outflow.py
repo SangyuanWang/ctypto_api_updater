@@ -66,5 +66,6 @@ if __name__ == "__main__":
     start_date = "2025-01-01"
     end_date = datetime.today().strftime("%Y-%m-%d")
     window = "day"
+    token_in(window)
     asset_in(window)
 
