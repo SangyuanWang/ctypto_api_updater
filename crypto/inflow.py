@@ -41,7 +41,7 @@ def asset_in(window):
         params = {
             "window": window,
             "exchange": "all_exchange",
-            "limit": 100,
+            "limit": 1000,
         }
         df = fetch_cryptoquant_data(
             asset=asset,
