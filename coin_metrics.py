@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from datetime import timedelta, datetime
+from datetime import datetime
 
 import pandas as pd
 import requests
 import time
 
-from CryptoQuantAPI import write_to_db
+from db_info import write_to_db
 
 """
 author: smangj

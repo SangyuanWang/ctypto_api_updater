@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from datetime import datetime, timedelta
-from CryptoQuantAPI import write_to_db
+from db_info import write_to_db
 import pandas as pd
 import requests
 
