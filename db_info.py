@@ -15,14 +15,18 @@ def write_to_db(df, table_name, db_url=DB_URL):
     engine = create_engine(db_url)
     # --- 对齐 DataFrame 列到表结构 ---
     insp = inspect(engine)
-    table_cols = [col['name'] for col in insp.get_columns(table_name)]
+    if insp.has_table(table_name):
+        table_cols = [col['name'] for col in insp.get_columns(table_name)]
 
-    # 补齐缺失列
-    for col in table_cols:
-        if col not in df.columns:
-            df[col] = None
+        # 补齐缺失列
+        for col in table_cols:
+            if col not in df.columns:
+                df[col] = None
 
-    # 丢掉多余列
-    df = df[table_cols]
-    with engine.begin() as co:
-        df.to_sql(table_name, co, if_exists="append", index=False, method='multi')
+        # 丢掉多余列
+        df = df[table_cols]
+        with engine.begin() as co:
+            df.to_sql(table_name, co, if_exists="append", index=False, method='multi')
+    else:
+        with engine.begin() as conn:
+            df.to_sql(table_name, conn, if_exists="replace", index=False, method='multi')
