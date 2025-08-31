@@ -25,7 +25,8 @@ ASSET_TOKEN = {"btc": [], "eth": [],
 
 EXCHANGE = ["binance", "spot_exchange", "derivative_exchange", "binance_us", "ftx", "poloniex",
             "bithumb", "bittrex", "bybit", "coinone", "gate_io", "htx_global", "korbit", "kucoin",
-            "mexc", "okx"]
+            "mexc", "okx" "bibox", "bigone", "bitfinex", "bitflyer", "bitforex", "bitget", "bitmart",
+            "bitmex", "biture", "bitstamp", "bkex"]
 
 def fetch_cryptoquant_data(asset, metric, params):
     url = f"https://api.cryptoquant.com/v1/{asset}/{metric}"
