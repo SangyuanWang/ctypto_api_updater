@@ -30,12 +30,13 @@ def token_in(window, exchange):
         )
         if df is None:
             continue
+        df["asset"] = ASSET
         df["token"] = token
         df["exchange"] = exchange
         print(df.head())  # 看一下数据格式
 
         # 存数据库
-        write_to_db(df, table_name=f"cryptoquant_{ASSET}_reserve_{window}")
+        write_to_db(df, table_name=f"cryptoquant_reserve_{window}")
         print(f"✅ {token}数据写入完成！")
 
 
@@ -54,7 +55,7 @@ def asset_in(window, exchange):
         if df is None:
             continue
         else:
-            df["token"] = asset
+            df["asset"] = asset
             df["exchange"] = exchange
             print(df.head())  # 看一下数据格式
 
@@ -65,12 +66,8 @@ def asset_in(window, exchange):
 
 # === 4. 主流程 ===
 if __name__ == "__main__":
-    # 举例：拉 BTC Exchange Reserve，从 2023-01-01 到今天
-    start_date = "2025-01-01"
-    end_date = datetime.today().strftime("%Y-%m-%d")
     window = "day"
-    exchange = ["all_exchange"] + EXCHANGE
-    for ex in exchange:
+    for ex in EXCHANGE:
         token_in(window, ex)
         asset_in(window, ex)
 

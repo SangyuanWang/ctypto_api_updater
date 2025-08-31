@@ -9,7 +9,7 @@ mail: 631535207@qq.com
 
 from datetime import datetime
 
-from crypto.info import ASSET_TOKEN, fetch_cryptoquant_data, ASSETS
+from crypto.info import ASSET_TOKEN, fetch_cryptoquant_data, ASSETS, EXCHANGE
 from db_info import write_to_db
 
 # === 1. 配置 ===
@@ -31,6 +31,7 @@ def token_in(window, exchange):
         )
         if df is None:
             continue
+        df["asset"] = ASSET
         df["token"] = token
         df["exchange"] = exchange
         print(df.head())  # 看一下数据格式
@@ -55,7 +56,7 @@ def asset_in(window, exchange):
         if df is None:
             continue
         else:
-            df["token"] = asset
+            df["asset"] = asset
             df["exchange"] = exchange
             print(df.head())  # 看一下数据格式
 
@@ -66,11 +67,8 @@ def asset_in(window, exchange):
 
 # === 4. 主流程 ===
 if __name__ == "__main__":
-    # 举例：拉 BTC Exchange Reserve，从 2023-01-01 到今天
-    start_date = "2025-01-01"
-    end_date = datetime.today().strftime("%Y-%m-%d")
     window = "day"
-    exchange = "all_exchange"
-    token_in(window, exchange)
-    asset_in(window, exchange)
+    for ex in EXCHANGE:
+        token_in(window, ex)
+        asset_in(window, ex)
 
