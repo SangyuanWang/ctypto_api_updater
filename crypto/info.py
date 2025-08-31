@@ -23,10 +23,16 @@ ASSET_TOKEN = {"btc": [], "eth": [],
                          "blz", "wbtc", "ens", "link", "dydx", "axs", "ygg"],
                "klay": [], "xrp": [], "alt": ["algo"]}
 
-EXCHANGE = ["binance", "spot_exchange", "derivative_exchange", "binance_us", "ftx", "poloniex",
+EXCHANGE = ["all_exchange", "binance", "spot_exchange", "derivative_exchange", "binance_us", "ftx", "poloniex",
             "bithumb", "bittrex", "bybit", "coinone", "gate_io", "htx_global", "korbit", "kucoin",
             "mexc", "okx" "bibox", "bigone", "bitfinex", "bitflyer", "bitforex", "bitget", "bitmart",
             "bitmex", "biture", "bitstamp", "bkex"]
+
+METRICS_EXCHANGE_MAP = {"inflow": "exchange-flows/inflow",
+                        "outflow": "exchange-flows/outflow",
+                        "reserve": "exchange-flows/reserve"}
+METRICS_MAP = {"active_address": "network-data/addresses-count"}
+
 
 def fetch_cryptoquant_data(asset, metric, params):
     url = f"https://api.cryptoquant.com/v1/{asset}/{metric}"
@@ -42,4 +48,17 @@ def fetch_cryptoquant_data(asset, metric, params):
         print(f"HTTP error occurred: {err}")
         print(f"Response content: {resp.content}")
         return None
+
+
+def uniform_timestamp(df: pd.DataFrame) -> pd.DataFrame:
+    # 确保有 timestamp 字段（CryptoQuant 一般返回 `timestamp` 或 `date`）
+    if "timestamp" in df.columns:
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+    elif "date" in df.columns:
+        df = df.rename(columns={"date": "timestamp"})
+        df["timestamp"] = pd.to_datetime(df["timestamp"])
+    else:
+        Warning("API response has no timestamp/date field")
+
+    return df
 
